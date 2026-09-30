@@ -18,9 +18,17 @@ public actor RelayReportStore {
     /// Returns the persistent random installation identifier, creating it on first use.
     public func installationId() throws -> String {
         if let existing = try store.string(forKey: Self.installationKey), !existing.isEmpty {
-            return existing
+            if existing.hasPrefix("install_") { return existing }
+
+            // Relay's public API requires installation identifiers to use the
+            // `install_` prefix. Upgrade identifiers created by SDK 1.0.0 in place.
+            let migrated = "install_\(existing)"
+            if migrated.count <= 72 {
+                try store.set(migrated, forKey: Self.installationKey)
+                return migrated
+            }
         }
-        let fresh = UUID().uuidString.lowercased()
+        let fresh = "install_\(UUID().uuidString.lowercased())"
         try store.set(fresh, forKey: Self.installationKey)
         return fresh
     }

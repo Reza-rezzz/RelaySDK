@@ -72,10 +72,22 @@ final class KeychainStorageTests: XCTestCase {
         let idA = try await storeA.installationId()
         let idB = try await storeB.installationId()
         XCTAssertEqual(idA, idB)
-        XCTAssertNotNil(UUID(uuidString: idA))
+        XCTAssertTrue(idA.hasPrefix("install_"))
+        XCTAssertNotNil(UUID(uuidString: String(idA.dropFirst("install_".count))))
 
         let other = try await RelayReportStore(store: RelayInMemorySecureStore()).installationId()
         XCTAssertNotEqual(idA, other)
+    }
+
+    func testLegacyInstallationIdIsMigrated() async throws {
+        let secure = RelayInMemorySecureStore()
+        let legacy = UUID().uuidString.lowercased()
+        try secure.set(legacy, forKey: RelayReportStore.installationKey)
+
+        let migrated = try await RelayReportStore(store: secure).installationId()
+
+        XCTAssertEqual(migrated, "install_\(legacy)")
+        XCTAssertEqual(try secure.string(forKey: RelayReportStore.installationKey), migrated)
     }
 
     func testRemoveAndRemoveAll() async throws {

@@ -126,7 +126,7 @@ public struct RelayDeviceContext: Codable, Sendable, Equatable {
 /// Static information about the SDK itself.
 public enum RelaySDKInfo {
     /// Semantic version of this SDK.
-    public static let version = "1.0.0"
+    public static let version = "1.0.1"
     /// Value sent as `sdk_version` in the context payload.
-    public static let versionString = "relay-swift-1.0"
+    public static let versionString = "relay-swift-1.0.1"
 }
