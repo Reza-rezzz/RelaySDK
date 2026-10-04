@@ -148,6 +148,10 @@ final class StatusMappingTests: XCTestCase {
     func testLanguageDetection() {
         XCTAssertEqual(RelayLanguage.best(for: Locale(identifier: "fa_IR")), .persian)
         XCTAssertEqual(RelayLanguage.best(for: Locale(identifier: "en_US")), .english)
+        XCTAssertEqual(RelayLanguage.best(preferredLanguages: ["fa-IR"]), .persian)
+        XCTAssertEqual(RelayLanguage.best(preferredLanguages: ["de-DE"]), .english)
+        XCTAssertEqual(RelayLanguage.best(preferredLanguages: ["tr-TR", "fa-IR"]), .english)
+        XCTAssertEqual(RelayLanguage.best(preferredLanguages: []), .english)
         XCTAssertEqual(RelayLanguage.best(for: Locale(identifier: "de_DE")), .english)
         XCTAssertTrue(RelayLanguage.persian.isRightToLeft)
         XCTAssertFalse(RelayLanguage.english.isRightToLeft)

@@ -15,7 +15,7 @@ public struct RelayConfiguration: @unchecked Sendable {
     public var retryPolicy: RelayRetryPolicy
     /// Whether device/app metadata is attached to reports.
     public var collectsDeviceContext: Bool
-    /// UI language. Defaults to the system language (English or Persian).
+    /// UI language. Defaults to the host app's active language; unsupported languages use English.
     public var language: RelayLanguage
     /// Visual customization for the built-in UI.
     public var theme: RelayTheme
@@ -47,7 +47,7 @@ public struct RelayConfiguration: @unchecked Sendable {
         self.timeout = max(1, timeout)
         self.retryPolicy = retryPolicy
         self.collectsDeviceContext = collectsDeviceContext
-        self.language = language ?? RelayLanguage.best()
+        self.language = language ?? RelayLanguage.best(for: bundle)
         self.theme = theme
         self.httpClient = httpClient ?? RelayURLSessionHTTPClient()
         self.secureStore = secureStore ?? RelayKeychainStore()

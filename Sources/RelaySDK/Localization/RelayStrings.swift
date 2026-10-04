@@ -8,10 +8,33 @@ public enum RelayLanguage: String, Sendable, CaseIterable {
     /// Whether this language is written right-to-left.
     public var isRightToLeft: Bool { self == .persian }
 
-    /// Picks the best bundled language for the given locale (falls back to English).
+    /// Picks the best bundled language for the given locale. Unsupported languages fall back to English.
     public static func best(for locale: Locale = .current) -> RelayLanguage {
-        let code = locale.language.languageCode?.identifier.lowercased() ?? "en"
-        return code == "fa" ? .persian : .english
+        resolve(locale.identifier)
+    }
+
+    /// Picks the SDK language from the app's active localization. Only the first identifier is
+    /// considered: if that language is unsupported, the UI intentionally falls back to English.
+    public static func best(preferredLanguages: [String]) -> RelayLanguage {
+        guard let activeLanguage = preferredLanguages.first else { return .english }
+        return resolve(activeLanguage)
+    }
+
+    /// Detects the language selected for the host app, not merely the device region.
+    /// An explicit language passed to `Relay.configure` still takes precedence.
+    public static func best(for bundle: Bundle, fallback locale: Locale = .current) -> RelayLanguage {
+        if let activeLocalization = bundle.preferredLocalizations.first {
+            return resolve(activeLocalization)
+        }
+        if let preferredLanguage = Locale.preferredLanguages.first {
+            return resolve(preferredLanguage)
+        }
+        return best(for: locale)
+    }
+
+    private static func resolve(_ identifier: String) -> RelayLanguage {
+        let code = Locale(identifier: identifier).language.languageCode?.identifier.lowercased()
+        return code == RelayLanguage.persian.rawValue ? .persian : .english
     }
 }
 

@@ -26,7 +26,7 @@ public enum Relay {
     ///   - timeout: Per-request timeout in seconds (default 30).
     ///   - retryPolicy: Backoff policy for transient failures (default 3 retries).
     ///   - collectsDeviceContext: Set `false` to omit app/device metadata.
-    ///   - language: Force `.english` or `.persian`; defaults to system language.
+    ///   - language: Force `.english` or `.persian`; defaults to the host app's active language with English fallback.
     ///   - theme: Accent color and form title customization.
     ///   - httpClient: Custom transport (tests / custom URLSession).
     ///   - secureStore: Custom secret storage (defaults to Keychain).
