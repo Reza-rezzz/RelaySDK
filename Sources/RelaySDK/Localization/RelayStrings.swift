@@ -41,7 +41,7 @@ public enum RelayLanguage: String, Sendable, CaseIterable {
 /// Keys for every user-facing string used by the SDK.
 public enum RelayStringKey: String, Sendable, CaseIterable {
     case formTitle, myMessages, send, sending, cancel, done, close, retry, refresh
-    case feedbackBoard, unableToLoad, vote, votes, shippedIn
+    case feedbackCenter, feedbackBoard, changelog, noReleases, noReleasesHint, unableToLoad, vote, votes, shippedIn
     case typeLabel, titleLabel, titlePlaceholder, messageLabel, messagePlaceholder
     case typeFeedback, typeBug, typeFeatureRequest, typeIssue
     case statusPending, statusInReview, statusPlanned, statusInProgress, statusCompleted, statusRejected, statusUnknown
@@ -105,7 +105,11 @@ public struct RelayStrings: Sendable {
         .close: "Close",
         .retry: "Try Again",
         .refresh: "Refresh",
+        .feedbackCenter: "Feedback Center",
         .feedbackBoard: "Feedback",
+        .changelog: "What's New",
+        .noReleases: "No updates yet",
+        .noReleasesHint: "Published releases and improvements will appear here.",
         .unableToLoad: "Unable to load feedback",
         .vote: "Vote",
         .votes: "votes",
@@ -169,7 +173,11 @@ public struct RelayStrings: Sendable {
         .close: "بستن",
         .retry: "تلاش دوباره",
         .refresh: "به‌روزرسانی",
+        .feedbackCenter: "مرکز بازخورد",
         .feedbackBoard: "بازخوردها",
+        .changelog: "تازه‌ها",
+        .noReleases: "هنوز به‌روزرسانی‌ای منتشر نشده",
+        .noReleasesHint: "نسخه‌ها و قابلیت‌های منتشرشده اینجا نمایش داده می‌شوند.",
         .unableToLoad: "بارگذاری بازخوردها ممکن نشد",
         .vote: "رأی",
         .votes: "رأی",

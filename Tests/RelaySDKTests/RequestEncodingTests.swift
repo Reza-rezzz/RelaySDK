@@ -27,7 +27,7 @@ final class RequestEncodingTests: XCTestCase {
         for key in ["platform", "app_version", "build", "os", "os_version", "device_type", "locale", "language", "sdk_version"] {
             XCTAssertNotNil(context[key], "missing context key \(key)")
         }
-        XCTAssertEqual(context["sdk_version"] as? String, "relay-swift-1.0.1")
+        XCTAssertEqual(context["sdk_version"] as? String, RelaySDKInfo.versionString)
     }
 
     func testFeatureRequestUsesSnakeCaseRawValue() throws {

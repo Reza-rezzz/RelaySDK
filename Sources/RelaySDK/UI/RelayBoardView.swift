@@ -6,11 +6,18 @@ public struct RelayBoardView: View {
     @State private var items: [RelayBoardItem] = []
     @State private var loading = true
     @State private var error: String?
+    private let embedded: Bool
 
-    public init() {}
+    public init(embedded: Bool = false) { self.embedded = embedded }
 
     public var body: some View {
-        NavigationStack {
+        Group {
+            if embedded { content } else { NavigationStack { content } }
+        }
+        .modifier(RelayLocalizedRoot())
+    }
+
+    private var content: some View {
             Group {
                 if loading { ProgressView() }
                 else if let error { ContentUnavailableView(strings.text(.unableToLoad), systemImage: "exclamationmark.triangle", description: Text(error)) }
@@ -19,7 +26,6 @@ public struct RelayBoardView: View {
             .navigationTitle(strings.text(.feedbackBoard))
             .task { await load() }
             .refreshable { await load() }
-        }
     }
 
     private func row(_ item: RelayBoardItem) -> some View {
