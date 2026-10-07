@@ -15,6 +15,7 @@ public struct RelayFeedbackView: View {
     @FocusState private var focusedField: Field?
 
     private let showsMyMessagesLink: Bool
+    private let embedded: Bool
     private let onSent: (@MainActor (RelayReport) -> Void)?
 
     private enum Field { case title, message }
@@ -26,29 +27,40 @@ public struct RelayFeedbackView: View {
     public init(
         initialType: RelayFeedbackType = .feedback,
         showsMyMessagesLink: Bool = true,
+        embedded: Bool = false,
         onSent: (@MainActor (RelayReport) -> Void)? = nil
     ) {
         _model = State(initialValue: RelayFeedbackViewModel(type: initialType))
         self.showsMyMessagesLink = showsMyMessagesLink
+        self.embedded = embedded
         self.onSent = onSent
     }
 
     public var body: some View {
-        NavigationStack {
-            Group {
-                if let report = model.sentReport {
-                    successView(report)
-                } else {
-                    form
-                }
+        Group {
+            if embedded { content } else { NavigationStack { content } }
+        }
+        .tint(theme.accentColor)
+        .modifier(RelayLocalizedRoot())
+    }
+
+    private var content: some View {
+        Group {
+            if let report = model.sentReport {
+                successView(report)
+            } else {
+                form
             }
+        }
             .navigationTitle(theme.formTitle ?? strings.text(.formTitle))
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
             #endif
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button(strings.text(model.sentReport == nil ? .cancel : .close)) { dismiss() }
+                if !embedded {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button(strings.text(model.sentReport == nil ? .cancel : .close)) { dismiss() }
+                    }
                 }
                 if showsMyMessagesLink, model.sentReport == nil {
                     ToolbarItem(placement: .primaryAction) {
@@ -61,9 +73,6 @@ public struct RelayFeedbackView: View {
                     }
                 }
             }
-        }
-        .tint(theme.accentColor)
-        .modifier(RelayLocalizedRoot())
     }
 
     // MARK: Form
@@ -258,5 +267,4 @@ public extension RelayFeedbackButton where Label == SwiftUI.Label<Text, Image> {
         }
     }
 }
-
 
