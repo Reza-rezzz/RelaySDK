@@ -118,6 +118,35 @@ public struct RelayThread: Codable, Sendable, Equatable, Identifiable {
     }
 }
 
+public struct RelayBoardItem: Codable, Sendable, Equatable, Identifiable {
+    public let id: String
+    public let type: RelayFeedbackType
+    public let title: String?
+    public let message: String
+    public let status: RelayFeedbackStatus
+    public let votes: Int
+    public let releasedVersion: String?
+    public let createdAt: Date
+    public let updatedAt: Date
+}
+
+public struct RelayBoard: Codable, Sendable, Equatable {
+    public struct Project: Codable, Sendable, Equatable { public let id: String; public let name: String }
+    public let project: Project
+    public let items: [RelayBoardItem]
+}
+
+public struct RelayChangelogItem: Codable, Sendable, Equatable, Identifiable {
+    public var id: String { version }
+    public let version: String
+    public let title: String
+    public let notes: String
+    public let publishedAt: Date?
+}
+public struct RelayChangelog: Codable, Sendable, Equatable { public let items: [RelayChangelogItem] }
+struct RelayVoteRequest: Encodable, Sendable { let voter_id: String; let vote: Bool }
+public struct RelayVoteResult: Codable, Sendable, Equatable { public let id: String; public let voted: Bool; public let votes: Int }
+
 // MARK: - Envelope
 
 /// Error payload returned by the server inside the envelope.

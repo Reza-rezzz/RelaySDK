@@ -117,6 +117,10 @@ public enum Relay {
         try await client().installationId()
     }
 
+    public static func board() async throws -> RelayBoard { try await client().board() }
+    @discardableResult public static func setVote(feedbackId: String, voted: Bool) async throws -> RelayVoteResult { try await client().setVote(feedbackId: feedbackId, voted: voted) }
+    public static func changelog() async throws -> RelayChangelog { try await client().changelog() }
+
     /// Deletes every locally stored report and token.
     public static func clearStoredReports() async throws {
         try await client().reportStore.removeAll()

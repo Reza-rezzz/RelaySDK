@@ -103,6 +103,24 @@ public final class RelayClient: Sendable {
         try await reportStore.installationId()
     }
 
+    public func board() async throws -> RelayBoard {
+        let request = try makeRequest(method: .get, path: "/v1/board", body: Optional<RelayFeedbackSubmission>.none)
+        return try await perform(request)
+    }
+
+    @discardableResult
+    public func setVote(feedbackId: String, voted: Bool) async throws -> RelayVoteResult {
+        let voter = try await installationId()
+        let id = feedbackId.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? feedbackId
+        let request = try makeRequest(method: .post, path: "/v1/feedback/\(id)/vote", body: RelayVoteRequest(voter_id: voter, vote: voted))
+        return try await perform(request)
+    }
+
+    public func changelog() async throws -> RelayChangelog {
+        let request = try makeRequest(method: .get, path: "/v1/changelog", body: Optional<RelayFeedbackSubmission>.none)
+        return try await perform(request)
+    }
+
     // MARK: - Request building
 
     func makeRequest<Body: Encodable>(method: RelayHTTPRequest.Method, path: String, body: Body?) throws -> RelayHTTPRequest {

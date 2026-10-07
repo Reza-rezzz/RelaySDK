@@ -41,6 +41,7 @@ public enum RelayLanguage: String, Sendable, CaseIterable {
 /// Keys for every user-facing string used by the SDK.
 public enum RelayStringKey: String, Sendable, CaseIterable {
     case formTitle, myMessages, send, sending, cancel, done, close, retry, refresh
+    case feedbackBoard, unableToLoad, vote, votes, shippedIn
     case typeLabel, titleLabel, titlePlaceholder, messageLabel, messagePlaceholder
     case typeFeedback, typeBug, typeFeatureRequest, typeIssue
     case statusPending, statusInReview, statusPlanned, statusInProgress, statusCompleted, statusRejected, statusUnknown
@@ -104,6 +105,11 @@ public struct RelayStrings: Sendable {
         .close: "Close",
         .retry: "Try Again",
         .refresh: "Refresh",
+        .feedbackBoard: "Feedback",
+        .unableToLoad: "Unable to load feedback",
+        .vote: "Vote",
+        .votes: "votes",
+        .shippedIn: "Shipped in",
         .typeLabel: "Type",
         .titleLabel: "Title (optional)",
         .titlePlaceholder: "Short summary",
@@ -163,6 +169,11 @@ public struct RelayStrings: Sendable {
         .close: "بستن",
         .retry: "تلاش دوباره",
         .refresh: "به‌روزرسانی",
+        .feedbackBoard: "بازخوردها",
+        .unableToLoad: "بارگذاری بازخوردها ممکن نشد",
+        .vote: "رأی",
+        .votes: "رأی",
+        .shippedIn: "منتشرشده در نسخه",
         .typeLabel: "نوع",
         .titleLabel: "عنوان (اختیاری)",
         .titlePlaceholder: "خلاصهٔ کوتاه",
