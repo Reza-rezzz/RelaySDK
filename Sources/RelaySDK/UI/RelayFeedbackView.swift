@@ -223,7 +223,7 @@ public struct RelayFeedbackView: View {
     }
 }
 
-/// Button that opens ``RelayFeedbackView`` in a sheet.
+/// Button that opens the complete ``RelayFeedbackCenterView`` in a sheet.
 ///
 /// ```swift
 /// RelayFeedbackButton()
@@ -251,7 +251,7 @@ public struct RelayFeedbackButton<Label: View>: View {
         .tint(theme.accentColor)
         .accessibilityLabel(strings.text(.a11yFeedbackButton))
         .sheet(isPresented: $isPresented) {
-            RelayFeedbackView(initialType: initialType)
+            RelayFeedbackCenterView(initialType: initialType)
                 .relayTheme(theme)
                 .environment(\.relayStrings, strings)
         }
