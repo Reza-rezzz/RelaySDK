@@ -7,13 +7,18 @@ public struct RelayFeedbackCenterView: View {
     @Environment(\.relayStrings) private var strings
     @State private var selectedTab: Tab = .submit
     private let initialType: RelayFeedbackType
+    private let onSent: (@MainActor (RelayReport) -> Void)?
 
     private enum Tab: Hashable {
         case submit, board, messages, changelog
     }
 
-    public init(initialType: RelayFeedbackType = .feedback) {
+    public init(
+        initialType: RelayFeedbackType = .feedback,
+        onSent: (@MainActor (RelayReport) -> Void)? = nil
+    ) {
         self.initialType = initialType
+        self.onSent = onSent
     }
 
     public var body: some View {
@@ -45,7 +50,7 @@ public struct RelayFeedbackCenterView: View {
     private var tabContent: some View {
         switch selectedTab {
         case .submit:
-            RelayFeedbackView(initialType: initialType, showsMyMessagesLink: false, embedded: true)
+            RelayFeedbackFormView(initialType: initialType, showsMyMessagesLink: false, embedded: true, onSent: onSent)
         case .board:
             RelayBoardView(embedded: true)
         case .messages:

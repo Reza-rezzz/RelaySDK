@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Ready-made feedback form. Present it in a sheet or push it onto a navigation stack.
+/// Complete, standard customer-facing feedback experience.
 ///
 /// ```swift
 /// .sheet(isPresented: $showFeedback) {
@@ -8,6 +8,26 @@ import SwiftUI
 /// }
 /// ```
 public struct RelayFeedbackView: View {
+    private let initialType: RelayFeedbackType
+    private let onSent: (@MainActor (RelayReport) -> Void)?
+
+    public init(
+        initialType: RelayFeedbackType = .feedback,
+        showsMyMessagesLink: Bool = true,
+        embedded: Bool = false,
+        onSent: (@MainActor (RelayReport) -> Void)? = nil
+    ) {
+        self.initialType = initialType
+        self.onSent = onSent
+    }
+
+    public var body: some View {
+        RelayFeedbackCenterView(initialType: initialType, onSent: onSent)
+    }
+}
+
+/// Internal form used as the first tab of the standard feedback center.
+struct RelayFeedbackFormView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.relayTheme) private var theme
     @Environment(\.relayStrings) private var strings
@@ -24,7 +44,7 @@ public struct RelayFeedbackView: View {
     ///   - initialType: Pre-selected report type.
     ///   - showsMyMessagesLink: Shows a toolbar link to ``RelayMyMessagesView``.
     ///   - onSent: Called after a successful submission.
-    public init(
+    init(
         initialType: RelayFeedbackType = .feedback,
         showsMyMessagesLink: Bool = true,
         embedded: Bool = false,
@@ -223,7 +243,7 @@ public struct RelayFeedbackView: View {
     }
 }
 
-/// Button that opens the complete ``RelayFeedbackCenterView`` in a sheet.
+/// Button that opens the complete standard feedback experience in a sheet.
 ///
 /// ```swift
 /// RelayFeedbackButton()
